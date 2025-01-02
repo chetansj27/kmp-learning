@@ -7,9 +7,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import org.example.kmp.dependencies.MyViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.KoinContext
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 
-@Composable
+/*@Composable
 @Preview
 fun App(batteryManager: BatteryManager) {
     MaterialTheme {
@@ -21,4 +28,30 @@ fun App(batteryManager: BatteryManager) {
             Text(text = "Current Battery Percentage is ${batteryManager.getBatteryPercentage()}%")
         }
     }
+}*/
+
+@OptIn(KoinExperimentalAPI::class)
+@Composable
+@Preview
+fun App() {
+    MaterialTheme {
+        KoinContext {
+            NavHost(
+                navController = rememberNavController(),
+                startDestination = "home"
+            ) {
+                composable("home") {
+                    val viewModel = koinViewModel<MyViewModel>()
+                    Box(
+                        modifier =
+                        Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                    ) {
+                        Text(text = viewModel.helloWorld())
+                    }
+                }
+            }
+        }
+    }
 }
+
+
